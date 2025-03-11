@@ -5,7 +5,10 @@ edition = "2024"
 
 [dependencies]
 axum = "0.8.1"
+chrono = "0.4.40"
+dotenvy = "0.15.7"
 hyper = "1.6.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0.140"
+sqlx = { version = "0.8.3", features = ["runtime-tokio", "tls-native-tls", "postgres", "rust_decimal", "chrono"] }
 tokio = { version = "1.44.0", features = ["rt-multi-thread", "macros"] }

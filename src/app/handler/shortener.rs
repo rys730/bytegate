@@ -6,6 +6,7 @@ use axum::Router;
 use axum::{extract::State, Json};
 use axum::http::StatusCode;
 
+use crate::app::infrastructure::postgres::postgres::DB;
 use crate::app::model::dto::shortener::{ShortenerRequest, ShortenerResponse};
 use crate::app::repository::shortener::ShortenerRepository;
 use crate::app::usecase::shortener::ShortenerUsecase;
@@ -21,8 +22,8 @@ pub async fn create_short_url(
     Ok((StatusCode::CREATED, res))
 }
 
-pub fn new_shortener_routes() -> Router {
-    let repo = Arc::new(ShortenerRepository::new());
+pub fn new_shortener_routes(db: DB) -> Router {
+    let repo = Arc::new(ShortenerRepository::new(db));
     let usecase: Arc<dyn ShortenerUsecaseTrait> = Arc::new(ShortenerUsecase::new(repo));
     Router::new()
     .route("/create", post(create_short_url))
