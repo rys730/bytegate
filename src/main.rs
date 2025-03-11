@@ -1,5 +1,7 @@
-use axum::{routing::get, Router};
-use bytegate::routes::{self, create_routes};
+mod routes;
+mod app;
+
+use crate::routes::create_routes;
 
 #[tokio::main]
 async fn main() {
