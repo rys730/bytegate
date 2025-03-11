@@ -10,7 +10,7 @@ impl DB {
     pub async fn new(cfg: DBConfig) -> Result<Self, sqlx::Error>{
         let database_url = format!(
             "postgres://{}:{}@{}/{}", 
-            cfg.db_host, 
+            cfg.db_user, 
             cfg.db_pass, 
             cfg.db_host, 
             cfg.db_name);
