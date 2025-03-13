@@ -24,7 +24,7 @@ pub async fn create_short_url(
     }
 }
 
-pub fn new_shortener_routes(db: DB, cfg: Arc<ServiceConfig>) -> Router {
+pub fn new_shortener_routes(db: Arc<DB>, cfg: Arc<ServiceConfig>) -> Router {
     let repo = Arc::new(ShortenerRepository::new(db));
     let usecase = Arc::new(ShortenerUsecase::new(cfg, repo));
     Router::new()

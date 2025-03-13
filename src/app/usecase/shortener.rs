@@ -14,7 +14,7 @@ use crate::app::{
 
 pub struct ShortenerUsecase {
     cfg: Arc<ServiceConfig>,
-    shortener_repository: Arc<ShortenerRepository>,
+    shortener_repository: Arc<dyn ShortenerRepositoryTrait>,
 }
 
 impl  ShortenerUsecase {

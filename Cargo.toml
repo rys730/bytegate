@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 anyhow = "1.0.97"
+async-trait = "0.1.87"
 axum = "0.8.1"
 base62 = "2.2.1"
 chrono = "0.4.40"

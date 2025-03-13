@@ -1,3 +1,7 @@
+use std::sync::Arc;
+
+use async_trait::async_trait;
+
 use crate::app::{
     common::errors::{
         Result, ServiceError
@@ -7,19 +11,21 @@ use crate::app::{
 };
 
 pub struct ShortenerRepository{
-    db: DB
+    db: Arc<DB>
 }
 
+#[async_trait]
 pub trait ShortenerRepositoryTrait: Send + Sync {
     async fn create_url_mapping(&self, url_map_dto: UrlMapDB) -> Result<UrlMapDB>;
 }
 
 impl ShortenerRepository {
-    pub fn new(db: DB) -> Self {
+    pub fn new(db: Arc<DB>) -> Self {
         Self {db: db}
     }
 }
 
+#[async_trait]
 impl ShortenerRepositoryTrait for ShortenerRepository {
     async fn create_url_mapping(&self, url_map_dto: UrlMapDB) -> Result<UrlMapDB> {
         let res = sqlx::query_as!(
