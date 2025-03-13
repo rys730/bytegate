@@ -1,4 +1,5 @@
-url shortener
+# WIP
+URL Shortener using rust axum + sqlx
 
 ## DB Migration
 
