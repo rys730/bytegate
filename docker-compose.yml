@@ -1,0 +1,33 @@
+services:
+  bytegate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      bytegate-postgres:
+        condition: service_healthy
+    environment:
+      - DB_HOST=bytegate-postgres:5432
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - DB_NAME=bytegate
+      - DATABASE_URL=postgres://postgres:postgres@bytegate-postgres:5432/bytegate
+      - BASE_URL=localhost:3000/
+      - RUST_BACKTRACE=1
+    ports:
+      - "3000:3000"
+
+  bytegate-postgres:
+    container_name: bytegate-postgres
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=bytegate
+    ports:
+      - "6969:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 5
+      timeout: 3s

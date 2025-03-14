@@ -2,9 +2,10 @@
 URL Shortener using rust axum + sqlx. 
 serves as learning purposes about rust backend development
 
-## DB Migration
+## Setup
 
-`cargo run --bin migrate`
+run `cargo sqlx prepare` to generate `.sqlx/` folder, which will be needed to build the docker image.
 
-## SQLx migration
-`cargo sqlx prepare --database-url postgres://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}`
+adjust env in the `docker-compose.yml` (or change it to use `.env`) then run `docker compose up`.
+
+service will run on `0.0.0.0:3000`
