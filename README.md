@@ -1,5 +1,6 @@
-# WIP
-URL Shortener using rust axum + sqlx
+# Bytegate
+URL Shortener using rust axum + sqlx. 
+serves as learning purposes about rust backend development
 
 ## DB Migration
 
