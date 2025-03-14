@@ -1,7 +1,8 @@
 use std::sync::Arc;
 
-use axum::response::IntoResponse;
-use axum::routing::post;
+use axum::extract::Path;
+use axum::response::{IntoResponse, Redirect};
+use axum::routing::{get, post};
 use axum::Router;
 use axum::{extract::State, Json};
 use axum::http::StatusCode;
@@ -24,10 +25,21 @@ pub async fn create_short_url(
     }
 }
 
+pub async fn get_url(
+    State(usecase): State<Arc<ShortenerUsecase>>,
+    Path(code): Path<String>,
+) -> Result<impl IntoResponse, ServiceError>{
+    match usecase.redirect_url(code).await {
+        Ok(url) => Ok(Redirect::permanent(url.original_url.as_str())),
+        Err(e) => Err(e)
+    }
+}
+
 pub fn new_shortener_routes(db: Arc<DB>, cfg: Arc<ServiceConfig>) -> Router {
     let repo = Arc::new(ShortenerRepository::new(db));
     let usecase = Arc::new(ShortenerUsecase::new(cfg, repo));
     Router::new()
     .route("/create", post(create_short_url))
+    .route("/{code}", get(get_url))
     .with_state(usecase)
 }
