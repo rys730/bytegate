@@ -1,4 +1,5 @@
 use axum::{response::IntoResponse, Json};
+use bcrypt::BcryptError;
 use hyper::StatusCode;
 use serde::Serialize;
 use thiserror::Error;
@@ -13,7 +14,10 @@ pub enum ServiceError {
     UnexpectedError(String),
 
     #[error("NotFound Error: {0}")]
-    NotFoundError(String)
+    NotFoundError(String),
+
+    #[error("bcrypt Error: {0}")]
+    BcryptError(#[from] BcryptError),
 }
 
 pub type Result<T> = std::result::Result<T, ServiceError>;
@@ -32,9 +36,12 @@ impl IntoResponse for ServiceError {
             },
             ServiceError::UnexpectedError(msg) => {
                 (StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error", "BTG_5000")
-            }
+            },
             ServiceError::NotFoundError(msg) => {
                 (StatusCode::NOT_FOUND, "The resource you are accessing is not found", "BTG_4000")
+            },
+            ServiceError::BcryptError(_) => {
+                (StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error", "BTG_5002")
             }
         };
 

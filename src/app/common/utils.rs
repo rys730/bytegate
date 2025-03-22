@@ -1,4 +1,6 @@
+use bcrypt::hash;
 use sha2::{Digest, Sha256};
+use crate::app::common::errors::Result;
 
 pub fn hash_url(url: &str) -> String {
     let mut hasher = Sha256::new();
@@ -12,4 +14,9 @@ pub fn hash_url(url: &str) -> String {
 
 pub fn generate_user_session() -> uuid::Uuid {
     uuid::Uuid::new_v4()
+}
+
+pub fn hash_password(password: &str) -> Result<String> {
+    let hashed = hash(password, 15)?;
+    Ok(hashed)
 }

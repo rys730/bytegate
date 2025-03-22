@@ -15,9 +15,10 @@ impl UserUsecase {
 
     pub async fn register_user (&self, request: RegisterUserRequest) -> Result<RegisterUserResponse> {
         let session = utils::generate_user_session().to_string();
+        let hashed_password = utils::hash_password(request.password.as_str())?;
         let res = self.user_repository.create_user(UserDB{
             username: request.username,
-            password: request.password,
+            password: hashed_password,
             session: session,
             ..Default::default()
         }).await?;
